@@ -15,5 +15,7 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
         List<DtoSucursal> GetSucursalAll();
         void EliminarPorId(Guid id);
         void Editar(DtoSucursal sucursal);
+        void AgregarComicSucursal(DtoComicSucursal idComics);
+        DtoComicSucursal  ObtenerComicsSucursal(Guid id);
     }
 }

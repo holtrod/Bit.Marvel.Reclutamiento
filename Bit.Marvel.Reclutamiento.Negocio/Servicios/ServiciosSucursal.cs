@@ -12,9 +12,17 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
     public class ServiciosSucursal : IServiciosSucursal
     {
         private readonly IRepositorioSucursal _repositorioSucursal;
-        public ServiciosSucursal(IRepositorioSucursal repositorioSucursal)
+        private readonly IRepositorioComicsSucursal _repositorioComicsSucursal;
+        public ServiciosSucursal(IRepositorioSucursal repositorioSucursal, IRepositorioComicsSucursal repositorioComicsSucursal)
         {
             _repositorioSucursal = repositorioSucursal;
+            _repositorioComicsSucursal = repositorioComicsSucursal;
+        }
+
+        public void AgregarComicSucursal(DtoComicSucursal Comics)
+        {
+            var comicSucursal = ComicSucursal.Create(Comics.IdSucursal, Comics.IdComics);
+            _repositorioComicsSucursal.AgregarComicsSucursal(comicSucursal);
         }
 
         public void Crear(DtoSucursal sucursal)
@@ -39,6 +47,15 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
         public DtoSucursal GetSucursalPorId(Guid id)
         {
             return MapDtoSucursal(_repositorioSucursal.GetSucursalPorId(id));
+        }
+
+        public DtoComicSucursal ObtenerComicsSucursal(Guid id)
+        {
+            var comicSucursal = _repositorioComicsSucursal.ObtenerComicsSucursal(id);
+            if (comicSucursal != null)
+                return new DtoComicSucursal { IdComics = comicSucursal.Comics, IdSucursal = comicSucursal.IdSucursal };
+            else
+                return null;
         }
 
         private DtoSucursal MapDtoSucursal(Sucursal sucursal)

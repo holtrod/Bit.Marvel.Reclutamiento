@@ -1,0 +1,41 @@
+﻿@model Bit.Marvel.Reclutamiento.Presentacion.Models.DetalleComicModel
+
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <div class="card mb-1">
+                <img class="card-img-top " src="@Model.Detalle.Thumbnail.ToString()" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@Model.Detalle.Title</h5>
+                    <p class="card-text"> Volumen @Model.Detalle.IssueNumber</p>
+                    <p class="card-text"> Páginas @Model.Detalle.PageCount</p>
+                    @foreach (var item in @Model.Detalle.Dates)
+                    {
+                        <p>@item.Type <span> @item.Date.Substring(0,10)</span></p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <h2>Personajes</h2>
+    <div class="row mt-2">
+        @foreach (var comics in Model.Personajes)
+        {
+            <div class="card col-3 mb-1">
+                <img class="card-img-top " src="@comics.Thumbnail.ToString()" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">@comics.Name</h5>
+                    <p class="card-text"> Descripcion: @comics.Description</p>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>

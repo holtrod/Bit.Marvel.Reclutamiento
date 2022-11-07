@@ -10,6 +10,7 @@ namespace Bit.Marvel.Reclutamiento.Pruebas
     {
         private readonly IServiciosSucursal _serviciosSucursal;
         private readonly IRepositorioSucursal _repositorioSucursal;
+        private readonly IRepositorioComicsSucursal _repositorioComicsSucursal;
         private readonly IUnidadDeTrabajo _unidadDeTrabajo;
         private readonly ConnectionString _conect;
 
@@ -17,7 +18,8 @@ namespace Bit.Marvel.Reclutamiento.Pruebas
         {
             _conect = new ConnectionString("cadena de conexión");
             _repositorioSucursal = RepositorioSucursal.Instancia;
-            _serviciosSucursal = new ServiciosSucursal(_repositorioSucursal);
+            _repositorioComicsSucursal = RepositorioComicsSucursal.Instancia;
+            _serviciosSucursal = new ServiciosSucursal(_repositorioSucursal, _repositorioComicsSucursal);
         }
 
         [Fact]

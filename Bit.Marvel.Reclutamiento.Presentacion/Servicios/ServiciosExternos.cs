@@ -26,7 +26,7 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Servicios
 
         public MarvelDetailResult<Personaje> ConsultarPersonajesComic(int id)
         {
-            var respuestaApi = ObtenerRespuestaGet($"https://gateway.marvel.com:443/v1/public/comics/{id}/characters?orderBy=title&");
+            var respuestaApi = ObtenerRespuestaGet($"https://gateway.marvel.com:443/v1/public/comics/{id}/characters?orderBy=name&");
             var respuestaMarvel = JsonConvert.DeserializeObject<MarvelResponse<MarvelDetailResult<Personaje>>>(respuestaApi.JsonResult);
 
             return respuestaMarvel.Data;

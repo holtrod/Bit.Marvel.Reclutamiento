@@ -11,7 +11,7 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
     {
         private readonly IServiciosSucursal _serviciosSucursal;
         private readonly IServiciosExternos _serviciosExternos;
-        public SucursalesController(IServiciosSucursal serviciosSucursal, IServiciosExternos serviciosExternos )
+        public SucursalesController(IServiciosSucursal serviciosSucursal, IServiciosExternos serviciosExternos)
         {
             _serviciosSucursal = serviciosSucursal;
             _serviciosExternos = serviciosExternos;
@@ -20,14 +20,22 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
         // GET: SucursalesController1
         public ActionResult Index()
         {
-            var sucursales = _serviciosSucursal.GetSucursalAll().Select(suc => new ModelSucursal{ Id = suc.Id, Direccion = suc.Direccion, Nombre = suc.Nombre  });
+            var sucursales = _serviciosSucursal.GetSucursalAll().Select(suc => new ModelSucursal { Id = suc.Id, Direccion = suc.Direccion, Nombre = suc.Nombre });
             return View(sucursales);
         }
 
         // GET: SucursalesController1/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
-            return View(_serviciosExternos.ConsultarCommics());
+            var comicsSucursal = _serviciosSucursal.ObtenerComicsSucursal(id);
+            var comicsEnSucursal = new List<DetalleComic>();
+            if(comicsSucursal != null)
+            foreach (var comic in comicsSucursal.IdComics)
+            {
+                comicsEnSucursal.Add(_serviciosExternos.ConsultarDetalleComic(comic).Results.First());
+            }
+            return View(comicsEnSucursal.Select(comic => new CommicFromList { Id = comic.Id, IssueNumber = comic.IssueNumber, Thumbnail = comic.Thumbnail, Title = comic.Title }).ToList());
+            
         }
 
         // GET: SucursalesController1/Create
@@ -53,7 +61,7 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
         {
             try
             {
-                var sucursal = new DtoSucursal { Id = Guid.NewGuid(),  Direccion =p.Direccion, Nombre =p.Nombre};
+                var sucursal = new DtoSucursal { Id = Guid.NewGuid(), Direccion = p.Direccion, Nombre = p.Nombre };
                 _serviciosSucursal.Crear(sucursal);
                 return RedirectToAction(nameof(Index));
             }
@@ -91,9 +99,10 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
         }
 
         // GET: SucursalesController1/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
-            return View();
+            _serviciosSucursal.EliminarPorId(id);
+            return RedirectToAction(nameof(Index));
         }
 
         // POST: SucursalesController1/Delete/5
@@ -109,6 +118,28 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
             {
                 return View();
             }
+        }
+
+        [HttpPost]
+        public ActionResult AgregarComicsSucursal([FromBody] DtoComicSucursal dtoComicSucursal)
+        {
+            try
+            {
+                _serviciosSucursal.AgregarComicSucursal(dtoComicSucursal);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return RedirectToAction(nameof(Index));
+            }
+        }
+        public ActionResult DetalleComic(int id)
+        {
+            return View(new DetalleComicModel
+            {
+                Detalle = _serviciosExternos.ConsultarDetalleComic(id).Results.FirstOrDefault(),
+                Personajes = _serviciosExternos.ConsultarPersonajesComic(id).Results.ToList()
+            });
         }
     }
 }

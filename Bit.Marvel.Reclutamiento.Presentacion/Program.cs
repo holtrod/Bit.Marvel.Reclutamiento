@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IServiciosSucursal, ServiciosSucursal>();
 builder.Services.AddTransient<IRepositorioSucursal, RepositorioSucursal>();
 builder.Services.AddTransient<IServiciosExternos, ServiciosExternos>();
+builder.Services.AddTransient<IRepositorioComicsSucursal, RepositorioComicsSucursal>();
 
 var app = builder.Build();
 
