@@ -21,8 +21,11 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
 
         public void AgregarComicSucursal(DtoComicSucursal Comics)
         {
-            var comicSucursal = ComicSucursal.Create(Comics.IdSucursal, Comics.IdComics);
-            _repositorioComicsSucursal.AgregarComicsSucursal(comicSucursal);
+            var sucursal =_repositorioComicsSucursal.ObtenerComicsSucursal(Comics.IdSucursal);
+            if (sucursal == null)
+                sucursal = ComicSucursal.Create(Comics.IdSucursal, new List<int>());
+            sucursal.AgregarComic(Comics.Id);
+            _repositorioComicsSucursal.AgregarComicsSucursal(sucursal);
         }
 
         public void Crear(DtoSucursal sucursal)
@@ -56,6 +59,14 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
                 return new DtoComicSucursal { IdComics = comicSucursal.Comics, IdSucursal = comicSucursal.IdSucursal };
             else
                 return null;
+        }
+
+        public List<DtoSucursal> ObtenerSucursalesporComic(int id)
+        {
+            var comicSucursal = _repositorioComicsSucursal.ObtenerComicsSucursalPorComicId(id);
+            comicSucursal.Select(comicsuc => GetSucursalPorId(comicsuc.IdSucursal));
+            
+            return  comicSucursal.Select(comicsuc => GetSucursalPorId(comicsuc.IdSucursal)).ToList();
         }
 
         private DtoSucursal MapDtoSucursal(Sucursal sucursal)

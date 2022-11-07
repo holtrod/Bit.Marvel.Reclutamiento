@@ -16,11 +16,12 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Servicios
 
         
 
-        public MarvelDetailResult<CommicFromList> ConsultarCommics()
+        public MarvelDetailResult<CommicFromList> ConsultarCommics(DtoComicSucursal dtoComicSucursal)
         {
             var respuestaApi = ObtenerRespuestaGet("https://gateway.marvel.com:443/v1/public/comics?orderBy=title&");
             var respuestaMarvel = JsonConvert.DeserializeObject<MarvelResponse<MarvelDetailResult<CommicFromList>>>(respuestaApi.JsonResult);
-            
+            if(dtoComicSucursal != null)
+            respuestaMarvel.Data.Results = respuestaMarvel.Data.Results.Where(s => !dtoComicSucursal.IdComics.Contains(s.Id));
             return respuestaMarvel.Data;
         }
 

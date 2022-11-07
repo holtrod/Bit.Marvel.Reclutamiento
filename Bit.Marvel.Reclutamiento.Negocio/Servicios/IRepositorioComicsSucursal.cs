@@ -7,5 +7,6 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
         void AgregarComicsSucursal(ComicSucursal comicSucursal);
 
         ComicSucursal ObtenerComicsSucursal(Guid idSucursal);
+        IEnumerable<ComicSucursal> ObtenerComicsSucursalPorComicId(int idcomic);
     }
 }

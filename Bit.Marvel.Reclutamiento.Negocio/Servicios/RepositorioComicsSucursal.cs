@@ -14,14 +14,25 @@ namespace Bit.Marvel.Reclutamiento.Negocio.Servicios
         public void AgregarComicsSucursal(ComicSucursal comicSucursal)
         {
             var sucursal = _TablaComicsSucursal.Where(Suc => Suc.IdSucursal == comicSucursal.IdSucursal).FirstOrDefault();
-
-            sucursal.Comics.AddRange(comicSucursal.Comics);
-            sucursal.AgregarComics( sucursal.Comics.Distinct().ToList());
+            if (sucursal == null)
+            {
+                _TablaComicsSucursal.Add(comicSucursal);
+            }
+            else
+            {
+                sucursal.Comics.AddRange(comicSucursal.Comics);
+                sucursal.AgregarComics( sucursal.Comics.Distinct().ToList());
+            }
         }
 
         public ComicSucursal ObtenerComicsSucursal(Guid idSucursal)
         {
             return _TablaComicsSucursal.Where(Suc => Suc.IdSucursal == idSucursal).FirstOrDefault();
+        }
+
+        public IEnumerable<ComicSucursal> ObtenerComicsSucursalPorComicId(int idcomic)
+        {
+            return _TablaComicsSucursal.Where(Suc => Suc.Comics.Contains(idcomic));
         }
         public static RepositorioComicsSucursal Instancia
         {

@@ -75,10 +75,11 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
         public ActionResult Edit(Guid id)
         {
             var suc = _serviciosSucursal.GetSucursalPorId(id);
-            var commicsdisponibles = _serviciosExternos.ConsultarCommics();
+            ;
+            var commicsdisponibles = _serviciosExternos.ConsultarCommics(_serviciosSucursal.ObtenerComicsSucursal(id));
 
 
-            return View(new ModelEditSucursal { Id = suc.Id, Direccion = suc.Direccion, Nombre = suc.Nombre, ComicsDisponibles = _serviciosExternos.ConsultarCommics() });
+            return View(new ModelEditSucursal { Id = suc.Id, Direccion = suc.Direccion, Nombre = suc.Nombre, ComicsDisponibles = commicsdisponibles });
         }
 
         // POST: SucursalesController1/Edit/5
@@ -135,10 +136,13 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Controllers
         }
         public ActionResult DetalleComic(int id)
         {
+            
+
             return View(new DetalleComicModel
             {
                 Detalle = _serviciosExternos.ConsultarDetalleComic(id).Results.FirstOrDefault(),
-                Personajes = _serviciosExternos.ConsultarPersonajesComic(id).Results.ToList()
+                Personajes = _serviciosExternos.ConsultarPersonajesComic(id).Results.ToList(),
+                Sucursales = _serviciosSucursal.ObtenerSucursalesporComic(id)
             });
         }
     }

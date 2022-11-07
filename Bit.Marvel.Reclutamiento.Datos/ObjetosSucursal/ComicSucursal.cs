@@ -26,5 +26,10 @@ namespace Bit.Marvel.Reclutamiento.Datos.ObjetosSucursal
         {
             this.Comics = comics;
         }
+        public void AgregarComic(int comics)
+        {
+            this.Comics = this.Comics == null ? this.Comics = new List<int>() : this.Comics;
+            this.Comics.Add(comics) ;
+        }
     }
 }

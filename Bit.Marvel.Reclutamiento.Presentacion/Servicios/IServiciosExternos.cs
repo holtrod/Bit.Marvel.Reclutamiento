@@ -5,7 +5,7 @@ namespace Bit.Marvel.Reclutamiento.Presentacion.Servicios
 {
     public interface IServiciosExternos
     {
-        MarvelDetailResult<CommicFromList> ConsultarCommics();
+        MarvelDetailResult<CommicFromList> ConsultarCommics(DtoComicSucursal sucursal);
         MarvelDetailResult<Personaje> ConsultarPersonajesComic(int id);
 
         MarvelDetailResult<DetalleComic> ConsultarDetalleComic(int id);
