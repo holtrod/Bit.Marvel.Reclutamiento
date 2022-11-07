@@ -1,0 +1,51 @@
+﻿@model Bit.Marvel.Reclutamiento.Presentacion.Models.MarvelDetailResult<CommicFromList>
+
+@{
+    ViewData["Title"] = "Detalle Sucursal";
+}
+
+
+<div class="container">
+    <div class="row mt-2">
+        @foreach (var comics in Model.Results)
+        {
+            <div class="col-3 mb-1 align-content-center">
+              <img class="imagenlista" src="@comics.Thumbnail.ToString()" alt="Card image cap">
+            </div>
+              <div class="col-6 align-content-lg-start">
+                <h5 class="card-title">@comics.Title</h5>
+                <p class="card-text"> Volumen @comics.IssueNumber</p>
+                <input class="my-checkbox" type="checkbox" id="@comics.Id" >
+              </div>
+            <hr />
+        }
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <input type="button" value="Prev" />
+            @{
+                var paginasTotales = Model.Total / Model.Limit;
+                var paginaActual = Model.Offset >0 ? Model.Offset / Model.Limit: 1;
+            }
+            <span>@paginaActual</span> de <span>@paginasTotales</span>
+            <input type="button" value="Next" />
+        </div>
+    </div>    
+</div>
+
+
+<div class="container">
+    <div class="row mt-2">
+        @foreach (var comics in Model.Results)
+        {
+            <div class="card col-3 mb-1">
+              <img class="card-img-top " src="@comics.Thumbnail.ToString()" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">@comics.Title</h5>
+                <p class="card-text"> Volumen @comics.IssueNumber</p>
+              </div>
+            </div>
+        }
+    </div>
+    
+</div>
